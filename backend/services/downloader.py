@@ -142,6 +142,7 @@ class DownloaderService:
             "quiet": True,
             "no_warnings": True,
             "merge_output_format": "mp4",
+            "postprocessor_args": ["-strict", "-2"],
             "extractor_args": {
                 "youtube": {
                     "player_client": ["ios", "android"]
@@ -182,6 +183,7 @@ class DownloaderService:
                 "-ar", "16000",   # 16kHz sample rate
                 "-ac", "1",       # mono
                 "-sample_fmt", "s16",  # 16-bit PCM
+                "-strict", "-2",
             ],
             "extractor_args": {
                 "youtube": {
