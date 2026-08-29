@@ -113,11 +113,6 @@ class DownloaderService:
             "quiet": True,
             "no_warnings": True,
             "skip_download": True,
-            "extractor_args": {
-                "youtube": {
-                    "player_client": ["ios", "android"]
-                }
-            }
         }
         if self._cookie_file:
             opts["cookiefile"] = self._cookie_file
@@ -143,11 +138,6 @@ class DownloaderService:
             "no_warnings": True,
             "merge_output_format": "mp4",
             "postprocessor_args": ["-strict", "-2"],
-            "extractor_args": {
-                "youtube": {
-                    "player_client": ["ios", "android"]
-                }
-            }
         }
         if self._cookie_file:
             opts["cookiefile"] = self._cookie_file
@@ -185,11 +175,6 @@ class DownloaderService:
                 "-sample_fmt", "s16",  # 16-bit PCM
                 "-strict", "-2",
             ],
-            "extractor_args": {
-                "youtube": {
-                    "player_client": ["ios", "android"]
-                }
-            }
         }
         if self._cookie_file:
             opts["cookiefile"] = self._cookie_file
