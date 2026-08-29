@@ -26,17 +26,16 @@ class ApiService {
     if (envUrl.isNotEmpty) return envUrl;
 
     if (kIsWeb) {
-      return 'http://localhost:8080';
+      return 'https://clippingcreator.onrender.com';
     }
     try {
       if (Platform.isAndroid) {
-        // Android Emulator uses 10.0.2.2 to reach host machine
-        return 'http://10.0.2.2:8080';
+        return 'https://clippingcreator.onrender.com';
       }
     } catch (_) {
       // Platform not supported or web
     }
-    return 'http://localhost:8080';
+    return 'https://clippingcreator.onrender.com';
   }
 
   // ── Jobs ──────────────────────────────────────────────────────────────

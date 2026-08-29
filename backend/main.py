@@ -159,11 +159,13 @@ app = FastAPI(
 )
 
 settings = get_settings()
+allow_all = "*" in settings.cors_origins
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
-    allow_origin_regex=r"https?://localhost:\d+",  # Support dynamic Flutter web ports
-    allow_credentials=True,
+    allow_origins=[] if allow_all else settings.cors_origins,
+    allow_origin_regex=r"https?://.*" if allow_all else r"https?://localhost:\d+",  # Support dynamic origins
+    allow_credentials=not allow_all,
     allow_methods=["*"],
     allow_headers=["*"],
 )
