@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Jobs collection — users can only access their own jobs
+    match /jobs/{jobId} {
+      // Allow read/write for now (MVP — no auth enforcement)
+      // In production: request.auth != null && resource.data.userId == request.auth.uid
+      allow read, write: if true;
+
+      // Clips sub-collection inherits parent job access
+      match /clips/{clipId} {
+        allow read, write: if true;
+      }
+    }
+  }
+}
