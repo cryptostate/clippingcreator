@@ -12,6 +12,8 @@
 *.env
 *.json.key
 service-account*.json
+cookies.txt
+*cookies.txt
 
 # Python
 __pycache__/

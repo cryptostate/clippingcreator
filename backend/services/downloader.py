@@ -26,6 +26,30 @@ class DownloaderService:
         self._settings = get_settings()
         self._storage = storage_service or StorageService()
         self._temp_dir = self._settings.temp_dir
+        self._cookie_file = self._setup_cookies()
+
+    def _setup_cookies(self) -> str | None:
+        """Find or create the cookies file for yt-dlp."""
+        # 1. Check local files
+        for path in ["backend/cookies.txt", "cookies.txt", os.path.join(os.path.dirname(__file__), "..", "cookies.txt")]:
+            if os.path.exists(path):
+                logger.info("Using local cookies file: %s", path)
+                return os.path.abspath(path)
+
+        # 2. Check environment variable YOUTUBE_COOKIES (useful for Render deployment)
+        cookies_env = os.getenv("YOUTUBE_COOKIES", "")
+        if cookies_env.strip():
+            logger.info("Found YOUTUBE_COOKIES environment variable. Writing to temp file.")
+            temp_cookie_path = os.path.join(self._temp_dir, "temp_cookies.txt")
+            try:
+                os.makedirs(self._temp_dir, exist_ok=True)
+                with open(temp_cookie_path, "w", encoding="utf-8") as f:
+                    f.write(cookies_env)
+                return temp_cookie_path
+            except Exception as e:
+                logger.error("Failed to write temporary cookies file: %s", e)
+        
+        return None
 
     # ------------------------------------------------------------------
     # Public API
@@ -95,6 +119,9 @@ class DownloaderService:
                 }
             }
         }
+        if self._cookie_file:
+            opts["cookiefile"] = self._cookie_file
+            
         with yt_dlp.YoutubeDL(opts) as ydl:
             info = ydl.extract_info(url, download=False)
 
@@ -121,6 +148,9 @@ class DownloaderService:
                 }
             }
         }
+        if self._cookie_file:
+            opts["cookiefile"] = self._cookie_file
+
         with yt_dlp.YoutubeDL(opts) as ydl:
             ydl.download([url])
 
@@ -159,6 +189,9 @@ class DownloaderService:
                 }
             }
         }
+        if self._cookie_file:
+            opts["cookiefile"] = self._cookie_file
+
         with yt_dlp.YoutubeDL(opts) as ydl:
             ydl.download([url])
 
