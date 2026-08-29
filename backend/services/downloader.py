@@ -89,6 +89,11 @@ class DownloaderService:
             "quiet": True,
             "no_warnings": True,
             "skip_download": True,
+            "extractor_args": {
+                "youtube": {
+                    "player_client": ["ios", "android"]
+                }
+            }
         }
         with yt_dlp.YoutubeDL(opts) as ydl:
             info = ydl.extract_info(url, download=False)
@@ -110,6 +115,11 @@ class DownloaderService:
             "quiet": True,
             "no_warnings": True,
             "merge_output_format": "mp4",
+            "extractor_args": {
+                "youtube": {
+                    "player_client": ["ios", "android"]
+                }
+            }
         }
         with yt_dlp.YoutubeDL(opts) as ydl:
             ydl.download([url])
@@ -143,6 +153,11 @@ class DownloaderService:
                 "-ac", "1",       # mono
                 "-sample_fmt", "s16",  # 16-bit PCM
             ],
+            "extractor_args": {
+                "youtube": {
+                    "player_client": ["ios", "android"]
+                }
+            }
         }
         with yt_dlp.YoutubeDL(opts) as ydl:
             ydl.download([url])
